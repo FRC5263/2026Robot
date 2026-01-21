@@ -27,9 +27,9 @@ public class SwerveModule {
     private double m_angleOffset = 0;
     private SwerveModuleState m_desiredState = new SwerveModuleState(0.0, new Rotation2d());
 
-    public SwerveModule(int driveCANID, int ANGLECANID, double angleOffset){
+    public SwerveModule(int driveCANID, int angleCANID, double angleOffset){
         m_driveMotor = new SparkMax(driveCANID, MotorType.kBrushless);
-        m_angleMotor = new SparkMax(ANGLECANID, MotorType.kBrushless);
+        m_angleMotor = new SparkMax(angleCANID, MotorType.kBrushless);
 
         m_driveEncoder = m_driveMotor.getEncoder();
         m_angleEncoder = m_angleMotor.getAbsoluteEncoder();

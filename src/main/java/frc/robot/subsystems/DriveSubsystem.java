@@ -3,11 +3,13 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems;
-
+ 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveSubsystem extends SubsystemBase {
-  public DriveSubsystem() {}
+  private final SwerveModule m_frontLeft = new SwerveModule(0, 0, 0);
+  public DriveSubsystem() {
+  }
 
   @Override
   public void periodic() {
