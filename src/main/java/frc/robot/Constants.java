@@ -22,7 +22,7 @@ public final class Constants {
     public static final double kDriveWheelFreeSpeedRPS = (kDriveMotorSpeedRPS * kWheelCircumfrenceMeters) / kDriveMotorReduction;
   }
 
-  public static final class driveConstants {
+  public static final class DriveConstants {
     public static final float kMaxSpeedMPS = 4.8f;  // Limits :(
     public static final double kMaxAngularSpeed = Math.PI * 2;  // In radians per second
 
@@ -56,6 +56,8 @@ public final class Constants {
 
     public static final class OIConstants{
       public static final int kDriverJoystickPort = 0;
+      public static final int kAngleJoystickPort  = 1;
+      public static final int kEverythingElsePort = 2;
       public static final double kDriveDeadband = 0.005;
     }
 
