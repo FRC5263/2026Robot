@@ -11,14 +11,14 @@ import edu.wpi.first.math.util.Units;
 public final class Constants {
   public static class OperatorConstants {
     // TODO: Ask build team about this
-    public static final int kDrivePinionTeeth = 0;
+    public static final int kDrivePinionTeeth = 14;
 
     public static final double kDriveMotorSpeedRPS = MotorConstants.kFreeSpeedRPM / 60;
-    public static final float kWheelDiameterMeters = 0.01f; // TODO: Get these measurments
+    public static final float kWheelDiameterMeters = 0.1016f; // TODO: Get these measurments
     public static final double kWheelCircumfrenceMeters = kWheelDiameterMeters * Math.PI;
 
     // TODO: get: Wheel bevel gear tooth count, first-stage spur gear tooth count, bevel pinion tooth count
-    public static final double kDriveMotorReduction = (0.0 * 22) / (kDrivePinionTeeth * 15); // Cheeseburgers Y Fries -ConNor
+    public static final double kDriveMotorReduction = (15 * 14) / (kDrivePinionTeeth * 45); // Cheeseburgers Y Fries -ConNor
     public static final double kDriveWheelFreeSpeedRPS = (kDriveMotorSpeedRPS * kWheelCircumfrenceMeters) / kDriveMotorReduction;
   }
 
@@ -27,8 +27,8 @@ public final class Constants {
     public static final double kMaxAngularSpeed = Math.PI * 2;  // In radians per second
 
     // TODO: Change when bot dimentions come back pls
-    public static final double kTrackWidth = Units.inchesToMeters(1);
-    public static final double kWheelBase = Units.inchesToMeters(1);
+    public static final double kTrackWidth = Units.inchesToMeters(27);
+    public static final double kWheelBase = Units.inchesToMeters(27);
     public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
         new Translation2d(kWheelBase / 2, kTrackWidth / 2),
         new Translation2d(kWheelBase / 2, -kTrackWidth / 2),
