@@ -53,6 +53,9 @@ public final class Constants {
 
     public static final boolean isGryroReversed = false;
     }
+    public static final class ShooterConstants{
+      public static int kShooterID = 9;
+    }
 
     public static final class OIConstants{
       public static final int kDriverJoystickPort = 0;
