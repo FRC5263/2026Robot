@@ -13,11 +13,14 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.ADIS16470_IMU.IMUAxis;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
 
 public class DriveSubsystem extends SubsystemBase {
+  private double x, y, z;
   private final SwerveModule m_frontLeft = new SwerveModule(
       Constants.DriveConstants.kFrontLeftDriveID, 
       Constants.DriveConstants.kFrontLeftAngleID, 
@@ -55,6 +58,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    SmartDashboard.putNumber("motor1", y);
     m_driveOdometry.update(
         Rotation2d.fromDegrees(m_gyro.getAngle(IMUAxis.kZ)),
         new SwerveModulePosition[] {
@@ -82,6 +86,9 @@ public class DriveSubsystem extends SubsystemBase {
 
   // Now for the big one
   public void drive(double xSpeed, double ySpeed, double rotation, boolean fieldRelative){
+    xSpeed = x;
+    ySpeed = y;
+    rotation = z;
     double xSpeedDelivered = xSpeed * DriveConstants.kMaxSpeedMPS;
     double ySpeedDelivered = ySpeed * DriveConstants.kMaxSpeedMPS;
     double rotDelivered = rotation * DriveConstants.kMaxAngularSpeed;
