@@ -20,7 +20,8 @@ import edu.wpi.first.wpilibj.ADIS16470_IMU.IMUAxis;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.*;
+import frc.robot.Constants;
+import frc.robot.Constants.DriveConstants;
 
 public class DriveSubsystem extends SubsystemBase {
   private final SwerveModule m_frontLeft = new SwerveModule(
@@ -61,19 +62,17 @@ public class DriveSubsystem extends SubsystemBase {
     HAL.report(tResourceType.kResourceType_RobotDrive, tInstances.kRobotDriveSwerve_MaxSwerve);
   }
 
-  SwerveModuleState[] states = new SwerveModuleState[] {
-    m_frontLeft.getState(),
-    m_frontRight.getState(),
-    m_rearLeft.getState(),
-    m_rearRight.getState()
-  };
+  SwerveModuleState frontLeftState = m_frontLeft.getState();
+  SwerveModuleState frontRightState = m_frontRight.getState();
+  SwerveModuleState backLeftState = m_rearLeft.getState();
+  SwerveModuleState backRightState = m_rearRight.getState();
 
   StructArrayPublisher<SwerveModuleState> publisher = NetworkTableInstance.getDefault()
   .getStructArrayTopic("states", SwerveModuleState.struct).publish();
 
   @Override
   public void periodic() {
-    publisher.set(states);
+    publisher.set(new SwerveModuleState[] {frontLeftState, frontRightState, backLeftState, backRightState});
     // Update odometry
     m_odometry.update(
         Rotation2d.fromDegrees(m_gyro.getAngle(IMUAxis.kZ)),
