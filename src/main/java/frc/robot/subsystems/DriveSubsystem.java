@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
  
+import edu.wpi.first.hal.FRCNetComm.*;
+import edu.wpi.first.hal.HAL;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -16,128 +18,127 @@ import edu.wpi.first.wpilibj.ADIS16470_IMU.IMUAxis;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
-import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.*;
 
 public class DriveSubsystem extends SubsystemBase {
-  private double x, y, z;
   private final SwerveModule m_frontLeft = new SwerveModule(
-      Constants.DriveConstants.kFrontLeftDriveID, 
-      Constants.DriveConstants.kFrontLeftAngleID, 
-      Constants.DriveConstants.kFrontLeftAngleOffset);
-
-  private final SwerveModule m_backLeft = new SwerveModule(
-      Constants.DriveConstants.kBackLeftDriveID, 
-      Constants.DriveConstants.kBackLeftAngleID, 
-      Constants.DriveConstants.kBackLeftAngleOffset);
-
-  private final SwerveModule m_backRight = new SwerveModule(
-    Constants.DriveConstants.kBackRightDriveID, 
-    Constants.DriveConstants.kBackRightAngleID, 
-    Constants.DriveConstants.kBackRightAngleOffset);
+      DriveConstants.kFrontLeftDriveID,
+      DriveConstants.kFrontLeftAngleID,
+      DriveConstants.kFrontLeftAngleOffset);
 
   private final SwerveModule m_frontRight = new SwerveModule(
-    Constants.DriveConstants.kFrontRightDriveID, 
-    Constants.DriveConstants.kFrontRightAngleID, 0);
+      DriveConstants.kFrontRightDriveID,
+      DriveConstants.kFrontRightAngleID,
+      DriveConstants.kFrontRightAngleOffset);
+
+  private final SwerveModule m_rearLeft = new SwerveModule(
+      DriveConstants.kBackLeftDriveID,
+      DriveConstants.kBackLeftAngleID,
+      DriveConstants.kBackLeftAngleOffset);
+
+  private final SwerveModule m_rearRight = new SwerveModule(
+      DriveConstants.kBackRightDriveID,
+      DriveConstants.kBackRightAngleID,
+      DriveConstants.kBackRightAngleOffset);
 
   private final ADIS16470_IMU m_gyro = new ADIS16470_IMU();
 
   // Odometry
-  SwerveDriveOdometry m_driveOdometry = new SwerveDriveOdometry(
-    DriveConstants.kDriveKinematics, 
-    Rotation2d.fromDegrees(m_gyro.getAngle(IMUAxis.kZ)), 
-    new SwerveModulePosition[]{
-      m_frontLeft.getPosition(),
-      m_backLeft.getPosition(),
-      m_backRight.getPosition(),
-      m_frontRight.getPosition()
-    });
+  SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
+      DriveConstants.kDriveKinematics,
+      Rotation2d.fromDegrees(m_gyro.getAngle(IMUAxis.kZ)),
+      new SwerveModulePosition[] {
+          m_frontLeft.getPosition(),
+          m_frontRight.getPosition(),
+          m_rearLeft.getPosition(),
+          m_rearRight.getPosition()
+      });
 
   public DriveSubsystem() {
+    // Usage reporting for MAXSwerve template
+    HAL.report(tResourceType.kResourceType_RobotDrive, tInstances.kRobotDriveSwerve_MaxSwerve);
   }
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("motor1", y);
-    m_driveOdometry.update(
+    // Update odometry
+    m_odometry.update(
         Rotation2d.fromDegrees(m_gyro.getAngle(IMUAxis.kZ)),
         new SwerveModulePosition[] {
-          m_frontLeft.getPosition(),
-          m_backLeft.getPosition(),
-          m_backRight.getPosition(),
-          m_frontRight.getPosition()
+            m_frontLeft.getPosition(),
+            m_frontRight.getPosition(),
+            m_rearLeft.getPosition(),
+            m_rearRight.getPosition()
         });
   }
-  
+
   public Pose2d getPose() {
-    return m_driveOdometry.getPoseMeters();
+    return m_odometry.getPoseMeters();
   }
-  public void resetOdometry(Pose2d pose){
-    m_driveOdometry.resetPosition(
+
+  public void resetOdometry(Pose2d pose) {
+    m_odometry.resetPosition(
         Rotation2d.fromDegrees(m_gyro.getAngle(IMUAxis.kZ)),
         new SwerveModulePosition[] {
-          m_frontLeft.getPosition(),
-          m_backLeft.getPosition(),
-          m_backRight.getPosition(),
-          m_frontRight.getPosition()
+            m_frontLeft.getPosition(),
+            m_frontRight.getPosition(),
+            m_rearLeft.getPosition(),
+            m_rearRight.getPosition()
         },
         pose);
   }
 
-  // Now for the big one
-  public void drive(double xSpeed, double ySpeed, double rotation, boolean fieldRelative){
-    xSpeed = x;
-    ySpeed = y;
-    rotation = z;
+  public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
+    // Convert the commanded speeds into the correct units for the drivetrain
     double xSpeedDelivered = xSpeed * DriveConstants.kMaxSpeedMPS;
     double ySpeedDelivered = ySpeed * DriveConstants.kMaxSpeedMPS;
-    double rotDelivered = rotation * DriveConstants.kMaxAngularSpeed;
+    double rotDelivered = rot * DriveConstants.kMaxAngularSpeed;
 
     var swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(
-      fieldRelative
+        fieldRelative
             ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered,
                 Rotation2d.fromDegrees(m_gyro.getAngle(IMUAxis.kZ)))
             : new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered));
-    SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, DriveConstants.kMaxSpeedMPS);
+    SwerveDriveKinematics.desaturateWheelSpeeds(
+        swerveModuleStates, DriveConstants.kMaxSpeedMPS);
     m_frontLeft.setDesiredState(swerveModuleStates[0]);
-    m_backLeft.setDesiredState(swerveModuleStates[1]);
-    m_backRight.setDesiredState(swerveModuleStates[2]);
-    m_frontRight.setDesiredState(swerveModuleStates[3]);
+    m_frontRight.setDesiredState(swerveModuleStates[1]);
+    m_rearLeft.setDesiredState(swerveModuleStates[2]);
+    m_rearRight.setDesiredState(swerveModuleStates[3]);
   }
 
-  // Wheel stops
-  public void setX(){
+  public void setX() {
     m_frontLeft.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
-    m_backLeft.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
-    m_backRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
     m_frontRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
+    m_rearLeft.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
+    m_rearRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
   }
 
-  public void setModuleStates(SwerveModuleState[] desiredStates){
+  public void setModuleStates(SwerveModuleState[] desiredStates) {
     SwerveDriveKinematics.desaturateWheelSpeeds(
         desiredStates, DriveConstants.kMaxSpeedMPS);
     m_frontLeft.setDesiredState(desiredStates[0]);
-    m_backLeft.setDesiredState(desiredStates[1]);
-    m_backRight.setDesiredState(desiredStates[2]);
-    m_frontRight.setDesiredState(desiredStates[3]);
+    m_frontRight.setDesiredState(desiredStates[1]);
+    m_rearLeft.setDesiredState(desiredStates[2]);
+    m_rearRight.setDesiredState(desiredStates[3]);
   }
 
-  public void resetEncoders(){
+  public void resetEncoders() {
     m_frontLeft.resetEncoders();
-    m_backLeft.resetEncoders();
-    m_backRight.resetEncoders();
+    m_rearLeft.resetEncoders();
     m_frontRight.resetEncoders();
+    m_rearRight.resetEncoders();
   }
 
-  public void zeroHeading(){
+  public void zeroHeading() {
     m_gyro.reset();
   }
 
-  public double getHeading(){
+  public double getHeading() {
     return Rotation2d.fromDegrees(m_gyro.getAngle(IMUAxis.kZ)).getDegrees();
   }
 
-  public double getTurnRate(){
-    return m_gyro.getRate(IMUAxis.kZ) * (Constants.DriveConstants.isGryroReversed ? -1.0 : 1.0);
+  public double getTurnRate() {
+    return m_gyro.getRate(IMUAxis.kZ) * (DriveConstants.isGryroReversed ? -1.0 : 1.0);
   }
 }
