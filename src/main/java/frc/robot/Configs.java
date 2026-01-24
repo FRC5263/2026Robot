@@ -1,5 +1,6 @@
 package frc.robot;
 
+import com.ctre.phoenix6.controls.Follower;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 public class Configs {
@@ -7,6 +8,7 @@ public class Configs {
         public static final SparkMaxConfig driveConfig = new SparkMaxConfig();
         public static final SparkMaxConfig angleConfig = new SparkMaxConfig();
         public static final SparkMaxConfig shooterConfig = new SparkMaxConfig();
+
 
         
     }
