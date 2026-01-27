@@ -1,17 +1,16 @@
 package frc.robot.subsystems;
+
 import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import frc.robot.Constants;
-
-import com.revrobotics.spark.SparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.SparkBase.PersistMode;
 
-import com.ctre.phoenix.motorcontrol.FollowerType;
-import com.revrobotics.RelativeEncoder;
-import frc.robot.Configs;
-
+import frc.robot.Constants;
+import com.revrobotics.spark.config.SparkMaxConfig;
 public class ClimberSubsystem extends SubsystemBase{
 
 private final SparkMax climb1Motor = new SparkMax(Constants.ClimbingConstants.kClimb1ID, MotorType.kBrushless);
@@ -22,53 +21,81 @@ private final RelativeEncoder m_climbEncoder = climb1Motor.getEncoder();
 DigitalInput topLimit = new DigitalInput(Constants.ClimbingConstants.m_TOPCHANNEL);
 DigitalInput bottomLimit = new DigitalInput(Constants.ClimbingConstants.m_BOTTOMCHANNEL);
 
-        public static final SparkMaxConfig climb2Config = new SparkMaxConfig();
+
+                        //tune these please
+   /*in most scenarios useless ->*/ private static final double MaxHeight = 100;
+  
+    /*whatever position the encoder starts at -> */    private static final double MinHeight = 0;
+    // I think the climber will be at it's bottom when we are on the field so it doesn't matter that much
+
+   
+
+        public static final SparkMaxConfig climb2Config = new SparkMaxConfig(); 
+        public static final SparkMaxConfig climb1Config = new SparkMaxConfig();
 
 
+public ClimberSubsystem(){
+    //.follow has to be set through sparkmaxconfig now i guess??????????
+    climb2Config
+    .follow(climb1Motor,false)
+    .idleMode(SparkMaxConfig.IdleMode.kBrake)
+            .smartCurrentLimit(40);
+            
+
+
+       climb1Config
+            .idleMode(SparkMaxConfig.IdleMode.kBrake)
+            .smartCurrentLimit(40);
+            //limit because climb
+
+       
+        climb1Motor.configure(
+            climb1Config,
+            ResetMode.kResetSafeParameters,
+            PersistMode.kPersistParameters
+        );
+
+        climb2Motor.configure(
+            climb2Config,
+            ResetMode.kResetSafeParameters,
+            PersistMode.kPersistParameters
+        );
+
+        
+    m_climbEncoder.setPosition(0);
+}
 
 public void setClimb(double speed){
+    double position =  m_climbEncoder.getPosition();
 
-    //idk how the follow function works so im just gonna set climb2 to the same instead
-if (speed>0){
-    climb2Motor.isFollower();
-    if (topLimit.get()){
-        //stop when top limit reached
+    //set height and limits
+    if (speed > 0 && topLimit.get()){
         climb1Motor.set(0);
-        //climb2Motor.set(0)
+        return;
     }
-    else {
-        climb1Motor.set(speed);
-        //climb2Motor.set(speed);
+    if (speed >  0 && bottomLimit.get()){
+        climb1Motor.set(0);
+        return;
     }
+    if (position >= MaxHeight && speed > 0){
+        return;
+    }
+    if (position <= MinHeight && speed < 0){
+        climb1Motor.set(0);
+    }
+    climb1Motor.set(speed);
 }
-    else{
-        if (bottomLimit.get()){
-            climb1Motor.set(0);
-            //climb2Motor.set(0)
-        }
-    else{
-
-       climb1Motor.set(speed);
-            //climb2Motor.set(speed)
-        }
-    }
-
-
-}
-
         public void ClimbUp(){
-            climb1Motor.set(1); //or whatever
-            climb1Motor.setInverted(false);
+            setClimb(1);
+            //TODO: also tune please
+        }
+
+
+        public void ClimbDown(){
+         setClimb(-1);
+        }
+        public void StopClimb(){
+            setClimb(0);
         }
         
-        public void ClimbDown(){
-            climb1Motor.setInverted(true);
-            climb1Motor.set(1);
-        }
-
-  
-
-
-
-
 }
