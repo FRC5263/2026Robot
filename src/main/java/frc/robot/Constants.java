@@ -61,6 +61,8 @@ public final class Constants {
       public static int kClimb2ID = 11;
       public static int m_TOPCHANNEL = 0;
       public static int m_BOTTOMCHANNEL = 1;
+      public static double m_MAXHEIGHT = 100;
+      public static double m_MINHEIGHT = 0;
     }
 
     public static final class OIConstants{

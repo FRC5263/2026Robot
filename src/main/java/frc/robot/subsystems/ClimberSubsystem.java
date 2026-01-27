@@ -23,9 +23,9 @@ DigitalInput bottomLimit = new DigitalInput(Constants.ClimbingConstants.m_BOTTOM
 
 
                         //tune these please
-   /*in most scenarios useless ->*/ private static final double MaxHeight = 100;
+   /*in most scenarios useless ->*/ private static final double MaxHeight = Constants.ClimbingConstants.m_MAXHEIGHT;
   
-    /*whatever position the encoder starts at -> */    private static final double MinHeight = 0;
+    /*whatever position the encoder starts at -> */    private static final double MinHeight = Constants.ClimbingConstants.m_MINHEIGHT;
     // I think the climber will be at it's bottom when we are on the field so it doesn't matter that much
 
    
