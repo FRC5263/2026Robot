@@ -11,9 +11,6 @@ public class ShooterSubsystem extends SubsystemBase{
 
     private final SparkMax m_shooterMotor = new SparkMax(Constants.ShooterConstants.kShooterID, MotorType.kBrushless);
     private final RelativeEncoder m_shootEncoder = m_shooterMotor.getEncoder();
-
- 
-
         public void shoot(){
             m_shooterMotor.set(1);
         }

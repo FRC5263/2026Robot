@@ -4,6 +4,9 @@
 
 package frc.robot.subsystems;
  
+import java.util.HashMap;
+import java.util.Map;
+
 import edu.wpi.first.hal.FRCNetComm.*;
 import edu.wpi.first.hal.HAL;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -20,8 +23,8 @@ import edu.wpi.first.wpilibj.ADIS16470_IMU.IMUAxis;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
-import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.*;
+import frc.robot.subsystems.simulation.SimModule;
 
 public class DriveSubsystem extends SubsystemBase {
   private final SwerveModule m_frontLeft = new SwerveModule(
@@ -62,17 +65,8 @@ public class DriveSubsystem extends SubsystemBase {
     HAL.report(tResourceType.kResourceType_RobotDrive, tInstances.kRobotDriveSwerve_MaxSwerve);
   }
 
-  SwerveModuleState frontLeftState = m_frontLeft.getState();
-  SwerveModuleState frontRightState = m_frontRight.getState();
-  SwerveModuleState backLeftState = m_rearLeft.getState();
-  SwerveModuleState backRightState = m_rearRight.getState();
-
-  StructArrayPublisher<SwerveModuleState> publisher = NetworkTableInstance.getDefault()
-  .getStructArrayTopic("states", SwerveModuleState.struct).publish();
-
   @Override
   public void periodic() {
-    publisher.set(new SwerveModuleState[] {frontLeftState, frontRightState, backLeftState, backRightState});
     // Update odometry
     m_odometry.update(
         Rotation2d.fromDegrees(m_gyro.getAngle(IMUAxis.kZ)),
@@ -152,5 +146,16 @@ public class DriveSubsystem extends SubsystemBase {
 
   public double getTurnRate() {
     return m_gyro.getRate(IMUAxis.kZ) * (DriveConstants.isGryroReversed ? -1.0 : 1.0);
+  }
+
+  public SwerveModule getModule(String module){
+    // Hashmaps my beloved
+    Map<String, SwerveModule> map = new HashMap<String, SwerveModule>();
+    map.put("front left", m_frontLeft);
+    map.put("front right", m_frontRight);
+    map.put("rear left", m_rearLeft);
+    map.put("rear right", m_rearRight);
+
+    return map.get(module);
   }
 }
