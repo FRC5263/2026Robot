@@ -20,7 +20,7 @@ private final RelativeEncoder m_climbEncoder = climb1Motor.getEncoder();
 //2 on both limits
 DigitalInput topLimit = new DigitalInput(Constants.ClimbingConstants.m_TOPCHANNEL);
 DigitalInput bottomLimit = new DigitalInput(Constants.ClimbingConstants.m_BOTTOMCHANNEL);
-
+  double position =  m_climbEncoder.getPosition();
 
                         //tune these please
    /*in most scenarios useless ->*/ private static final double MaxHeight = Constants.ClimbingConstants.m_MAXHEIGHT;
@@ -63,39 +63,40 @@ public ClimberSubsystem(){
 
         
     m_climbEncoder.setPosition(0);
+     
 }
 
-public void setClimb(double speed){
-    double position =  m_climbEncoder.getPosition();
 
-    //set height and limits
-    if (speed > 0 && topLimit.get()){
+        public void ClimbUp(double speed){
+         if (position >= MaxHeight && speed > 0){
+            climb1Motor.set(0);
+        return;
+    }
+         if (speed > 0 && topLimit.get()){
         climb1Motor.set(0);
         return;
     }
-    if (speed >  0 && bottomLimit.get()){
+    else {
+        climb1Motor.set(speed);
+    }
+        }
+
+
+        public void ClimbDown(double speed){
+         if (speed >  0 && bottomLimit.get()){
         climb1Motor.set(0);
         return;
     }
-    if (position >= MaxHeight && speed > 0){
-        return;
-    }
+  
     if (position <= MinHeight && speed < 0){
         climb1Motor.set(0);
     }
-    climb1Motor.set(speed);
-}
-        public void ClimbUp(){
-            setClimb(1);
-            //TODO: also tune please
-        }
-
-
-        public void ClimbDown(){
-         setClimb(-1);
+    else {
+        climb1Motor.set(speed);
+    }
         }
         public void StopClimb(){
-            setClimb(0);
+            climb1Motor.set(0);
         }
         
 }
