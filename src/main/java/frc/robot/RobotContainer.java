@@ -13,12 +13,14 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.commands.shoot;
 
 public class RobotContainer {
 
   private final DriveSubsystem m_drive = new DriveSubsystem();
   private final ShooterSubsystem m_shooter = new ShooterSubsystem();
+  private final ClimberSubsystem m_climber = new ClimberSubsystem();
 
 
   Joystick m_driveStick = new Joystick(Constants.OIConstants.kDriverJoystickPort);
@@ -56,8 +58,11 @@ public class RobotContainer {
        new JoystickButton(m_utilStick, 1) 
        .whileTrue(new shoot(m_shooter));
 
+        new JoystickButton(m_angleStick,6)
+        .whileTrue(new InstantCommand(() -> m_climber.ClimbUp(1)));
 
-
+        new JoystickButton(m_angleStick, 7)
+        .whileTrue(new InstantCommand(() -> m_climber.ClimbDown(-1)));
   }
 
   public Command getAutonomousCommand() {

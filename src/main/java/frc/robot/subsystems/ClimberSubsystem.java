@@ -17,16 +17,11 @@ private final SparkMax climb1Motor = new SparkMax(Constants.ClimbingConstants.kC
 //climb 2 follows 1 i think??????
 private final SparkMax climb2Motor = new SparkMax(Constants.ClimbingConstants.kClimb2ID, MotorType.kBrushless);
 private final RelativeEncoder m_climbEncoder = climb1Motor.getEncoder();
-//2 on both limits
+
+/*isn't it funny i didn't know what a digital limit switch looked like whilst making this :/ */
 DigitalInput topLimit = new DigitalInput(Constants.ClimbingConstants.m_TOPCHANNEL);
 DigitalInput bottomLimit = new DigitalInput(Constants.ClimbingConstants.m_BOTTOMCHANNEL);
-  double position =  m_climbEncoder.getPosition();
 
-                        //tune these please
-   /*in most scenarios useless ->*/ private static final double MaxHeight = Constants.ClimbingConstants.m_MAXHEIGHT;
-  
-    /*whatever position the encoder starts at -> */    private static final double MinHeight = Constants.ClimbingConstants.m_MINHEIGHT;
-    // I think the climber will be at it's bottom when we are on the field so it doesn't matter that much
 
    
 
@@ -44,11 +39,12 @@ public ClimberSubsystem(){
 
 
        climb1Config
+       //I have not a clue in the world if the brake thing works at all
             .idleMode(SparkMaxConfig.IdleMode.kBrake)
             .smartCurrentLimit(40);
             //limit because climb
 
-       
+      
         climb1Motor.configure(
             climb1Config,
             ResetMode.kResetSafeParameters,
@@ -68,31 +64,28 @@ public ClimberSubsystem(){
 
 
         public void ClimbUp(double speed){
-         if (position >= MaxHeight && speed > 0){
+         if (topLimit.get() && speed >= 0){
             climb1Motor.set(0);
         return;
-    }
-         if (speed > 0 && topLimit.get()){
-        climb1Motor.set(0);
-        return;
-    }
+        }
+        
     else {
         climb1Motor.set(speed);
+        return;
     }
         }
 
 
         public void ClimbDown(double speed){
-         if (speed >  0 && bottomLimit.get()){
+         if (speed <= 0 && bottomLimit.get()){
         climb1Motor.set(0);
         return;
-    }
-  
-    if (position <= MinHeight && speed < 0){
-        climb1Motor.set(0);
-    }
+         }
+
     else {
         climb1Motor.set(speed);
+        return;
+        
     }
         }
         public void StopClimb(){
