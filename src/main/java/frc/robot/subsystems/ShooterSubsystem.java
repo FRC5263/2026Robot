@@ -13,8 +13,8 @@ public class ShooterSubsystem extends SubsystemBase{
 
  
 
-        public void doshoot(){
-            m_shooterMotor.set(1);
+        public void doshoot(double speed){
+            m_shooterMotor.set(speed);
         }
 
 }

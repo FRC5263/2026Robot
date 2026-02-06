@@ -14,7 +14,7 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
-import frc.robot.commands.shoot;
+
 
 public class RobotContainer {
 
@@ -55,14 +55,14 @@ public class RobotContainer {
         () -> m_drive.zeroHeading(),
         m_drive));
 
-       new JoystickButton(m_utilStick, 1) 
-       .whileTrue(new shoot(m_shooter));
+       new JoystickButton(m_angleStick, 1) 
+       .onTrue(new InstantCommand(()-> m_shooter.doshoot(1)));
 
         new JoystickButton(m_angleStick,6)
-        .whileTrue(new InstantCommand(() -> m_climber.ClimbUp(1)));
+        .onTrue(new InstantCommand(() -> m_climber.ClimbUp(1)));
 
         new JoystickButton(m_angleStick, 7)
-        .whileTrue(new InstantCommand(() -> m_climber.ClimbDown(-1)));
+        .onTrue(new InstantCommand(() -> m_climber.ClimbDown(-1)));
   }
 
   public Command getAutonomousCommand() {
