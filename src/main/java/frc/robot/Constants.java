@@ -46,6 +46,11 @@ public final class Constants {
                       kFrontRightAngleID = 8;
     // ------------ ------ ------------ //
 
+    public static int kFrontLeftEncoderPort = 0,
+                      kBackLeftEncoderPort = 1,
+                      kFrontRightEncoderPort = 2,
+                      kBackRightEncoderPort = 3;
+
     public static final double kFrontLeftAngleOffset = -Math.PI / 2;
     public static final double kBackLeftAngleOffset = Math.PI;
     public static final double kBackRightAngleOffset = Math.PI / 2;

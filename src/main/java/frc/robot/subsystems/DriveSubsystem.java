@@ -24,20 +24,24 @@ public class DriveSubsystem extends SubsystemBase {
   private final SwerveModule m_frontLeft = new SwerveModule(
       DriveConstants.kFrontLeftDriveID,
       DriveConstants.kFrontLeftAngleID,
+      DriveConstants.kFrontLeftEncoderPort,
       DriveConstants.kFrontLeftAngleOffset);
 
   private final SwerveModule m_frontRight = new SwerveModule(
       DriveConstants.kFrontRightDriveID,
       DriveConstants.kFrontRightAngleID,
+      DriveConstants.kFrontRightEncoderPort,
       DriveConstants.kFrontRightAngleOffset);
 
   private final SwerveModule m_rearLeft = new SwerveModule(
       DriveConstants.kBackLeftDriveID,
       DriveConstants.kBackLeftAngleID,
+      DriveConstants.kBackLeftEncoderPort,
       DriveConstants.kBackLeftAngleOffset);
 
   private final SwerveModule m_rearRight = new SwerveModule(
       DriveConstants.kBackRightDriveID,
+      DriveConstants.kBackRightAngleID,
       DriveConstants.kBackRightAngleID,
       DriveConstants.kBackRightAngleOffset);
 
