@@ -55,14 +55,15 @@ public final class Constants {
     }
     public static final class ShooterConstants{
       public static int kShooterID = 9;
+      public static int kHatchID  = 12;
     }
     public static final class ClimbingConstants{
       public static int kClimb1ID = 10;
       public static int kClimb2ID = 11;
+      public static double m_CLIMBSPEED = 1;
       public static int m_TOPCHANNEL = 0;
       public static int m_BOTTOMCHANNEL = 1;
-      public static double m_MAXHEIGHT = 100;
-      public static double m_MINHEIGHT = 0;
+
     }
 
     public static final class OIConstants{

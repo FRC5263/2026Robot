@@ -14,13 +14,16 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.commands.climb;
 
 
 public class RobotContainer {
 
   private final DriveSubsystem m_drive = new DriveSubsystem();
   private final ShooterSubsystem m_shooter = new ShooterSubsystem();
-  private final ClimberSubsystem m_climber = new ClimberSubsystem();
+  private final ClimberSubsystem m_climbSubsystem = new ClimberSubsystem();
+
+  private final climb m_climb = new climb(m_climbSubsystem);
 
 
   Joystick m_driveStick = new Joystick(Constants.OIConstants.kDriverJoystickPort);
@@ -58,11 +61,10 @@ public class RobotContainer {
        new JoystickButton(m_angleStick, 1) 
        .onTrue(new InstantCommand(()-> m_shooter.doshoot(1)));
 
-        new JoystickButton(m_angleStick,6)
-        .onTrue(new InstantCommand(() -> m_climber.ClimbUp(1)));
+       new JoystickButton(m_angleStick, 6)
+       .onTrue(m_climb);
 
-        new JoystickButton(m_angleStick, 7)
-        .onTrue(new InstantCommand(() -> m_climber.ClimbDown(-1)));
+       
   }
 
   public Command getAutonomousCommand() {

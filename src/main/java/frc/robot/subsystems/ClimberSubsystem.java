@@ -61,35 +61,28 @@ public ClimberSubsystem(){
     m_climbEncoder.setPosition(0);
      
 }
-
-
-        public void ClimbUp(double speed){
-         if (topLimit.get() && speed >= 0){
-            climb1Motor.set(0);
-        return;
+        /*I redid climb again */
+        public void Climb(double speed){
+            if(speed >= 0 && topLimit.get()){
+                StopClimb();
+                return;
+            }      
+        if(speed<=0 && bottomLimit.get()){
+                StopClimb();
+                return;
+        }
+        else{
+                climb1Motor.set(speed);
+                return;
+        }
         }
         
-    else {
-        climb1Motor.set(speed);
-        return;
-    }
-        }
 
 
-        public void ClimbDown(double speed){
-         if (speed <= 0 && bottomLimit.get()){
-        climb1Motor.set(0);
-        return;
-         }
-
-    else {
-        climb1Motor.set(speed);
-        return;
         
-    }
-        }
         public void StopClimb(){
             climb1Motor.set(0);
         }
+      
         
 }
