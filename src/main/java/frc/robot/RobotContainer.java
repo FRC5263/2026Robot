@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.OIConstants;
-import frc.robot.commands.Shoot;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
@@ -19,7 +18,6 @@ public class RobotContainer {
 
   private final DriveSubsystem m_drive = new DriveSubsystem();
   private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
-  private final Shoot m_shooter = new Shoot(m_shooterSubsystem);
 
   Joystick m_driveStick = new Joystick(Constants.OIConstants.kDriverJoystickPort);
   Joystick m_angleStick = new Joystick(Constants.OIConstants.kAngleJoystickPort);
@@ -49,7 +47,10 @@ public class RobotContainer {
         m_drive));
     
     new JoystickButton(m_angleStick, 1)
-    .onTrue(m_shooter);
+    .onTrue(new InstantCommand(
+      () -> m_shooterSubsystem.shoot(),
+      m_shooterSubsystem
+    ));
   }
 
   public Command getAutonomousCommand() {
