@@ -4,7 +4,6 @@
 
 package frc.robot.commands.auton;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -14,8 +13,6 @@ public class autonWriter {
     private double startTime;
 
     private FileWriter m_writer;
-
-    private int count;
 
     public autonWriter() {
         try {

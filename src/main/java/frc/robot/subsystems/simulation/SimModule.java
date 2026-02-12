@@ -4,8 +4,6 @@
 
 package frc.robot.subsystems.simulation;
 
-import java.util.HashMap;
-import java.util.Map;
 
 import com.revrobotics.sim.SparkAbsoluteEncoderSim;
 import com.revrobotics.sim.SparkMaxSim;
@@ -13,10 +11,8 @@ import com.revrobotics.sim.SparkRelativeEncoderSim;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.system.plant.DCMotor;
-import edu.wpi.first.wpilibj.motorcontrol.Spark;
 
 public class SimModule {
 
