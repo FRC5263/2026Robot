@@ -9,9 +9,13 @@ import frc.robot.Constants;
 public class ShooterSubsystem extends SubsystemBase{
 
     private final SparkMax m_shooterMotor = new SparkMax(Constants.ShooterConstants.kShooterID, MotorType.kBrushless);
-    private final RelativeEncoder m_shootEncoder = m_shooterMotor.getEncoder();
+    private final RelativeEncoder m_shooterEncoder = m_shooterMotor.getEncoder();
 
     public void setPower(double power) {
         m_shooterMotor.set(power);
+    }
+
+    public double getPower() {
+        return m_shooterMotor.get();
     }
 }
