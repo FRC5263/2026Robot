@@ -1,7 +1,6 @@
 package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder; 
 
@@ -11,8 +10,8 @@ public class ShooterSubsystem extends SubsystemBase{
 
     private final SparkMax m_shooterMotor = new SparkMax(Constants.ShooterConstants.kShooterID, MotorType.kBrushless);
     private final RelativeEncoder m_shootEncoder = m_shooterMotor.getEncoder();
-        public void shoot(){
-            m_shooterMotor.set(1);
-        }
 
+    public void setPower(double power) {
+        m_shooterMotor.set(power);
+    }
 }

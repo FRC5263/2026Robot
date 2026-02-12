@@ -26,7 +26,7 @@ public final class Constants {
     public static final float kMaxSpeedMPS = 4.8f;  // Limits :(
     public static final double kMaxAngularSpeed = Math.PI * 2;  // In radians per second
 
-    // TODO: Change when bot dimentions come back pls
+    // TODO: Verify that this is right
     public static final double kTrackWidth = Units.inchesToMeters(27);
     public static final double kWheelBase = Units.inchesToMeters(27);
     public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
@@ -70,6 +70,7 @@ public final class Constants {
     }
 
     public static final class AutoConstants{
+      // TODO: get values
       public static final double kMaxSpeedMetersPerSecond = 0; // Limits in case auton shits
       public static final double kMaxAccelelerationMetersPerSecondSquared = 0;
       public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;

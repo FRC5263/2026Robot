@@ -40,9 +40,9 @@ public class SwerveModule {
       m_drivingClosedLoopController = m_driveMotor.getClosedLoopController();
       m_turningClosedLoopController = m_angleMotor.getClosedLoopController();
   
-      m_driveMotor.configure(Configs.SwerveModule.driveConfig, ResetMode.kResetSafeParameters,
+      m_driveMotor.configure(Configs.SwerveConfigs.getDriveConfig(), ResetMode.kResetSafeParameters,
           PersistMode.kPersistParameters);
-      m_angleMotor.configure(Configs.SwerveModule.angleConfig, ResetMode.kResetSafeParameters,
+      m_angleMotor.configure(Configs.SwerveConfigs.getAngleConfig(), ResetMode.kResetSafeParameters,
           PersistMode.kPersistParameters);
   
       m_chassisAngularOffset = chassisAngularOffset;
