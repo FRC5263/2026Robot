@@ -4,10 +4,13 @@
 
 package frc.robot;
 
+import javax.print.attribute.standard.PrintQuality;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.OIConstants;
@@ -16,14 +19,18 @@ import frc.robot.commands.auton.auton;
 import frc.robot.commands.auton.autonPlayer;
 import frc.robot.commands.auton.autonWriter;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.commands.climbCommand;
+import frc.robot.subsystems.ClimberSubsystem;
 
 public class RobotContainer {
 
   private final DriveSubsystem m_drive = new DriveSubsystem();
   private final shootContinuous m_calculateAndShoot = new shootContinuous();
+  private final ClimberSubsystem m_climberSub = new ClimberSubsystem();
   private final autonWriter m_recorder = new autonWriter();
   private final autonPlayer m_player = new autonPlayer();
   private final auton m_auton = new auton(m_player, m_drive);
+
 
   Joystick m_driveStick = new Joystick(Constants.OIConstants.kDriverJoystickPort);
   Joystick m_angleStick = new Joystick(Constants.OIConstants.kAngleJoystickPort);
@@ -54,6 +61,14 @@ public class RobotContainer {
     
     new JoystickButton(m_angleStick, 1)
     .onTrue(m_calculateAndShoot);
+
+    //up
+    new JoystickButton(m_angleStick,6)
+        .whileTrue(new climbCommand(m_climberSub, () -> 1));
+
+    //down
+    new JoystickButton(m_angleStick, 7)
+        .whileTrue(new climbCommand(m_climberSub, () -> -1));
 
     new JoystickButton(m_angleStick, 2)
       .toggleOnTrue(new InstantCommand(
