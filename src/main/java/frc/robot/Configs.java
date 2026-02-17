@@ -9,7 +9,6 @@ public class Configs {
         private static final SparkMaxConfig angleConfig = new SparkMaxConfig();
 
         public SwerveConfigs(){
-            configure();
         }
 
         public void configure(){
