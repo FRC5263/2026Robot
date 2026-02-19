@@ -60,6 +60,15 @@ public final class Constants {
     }
     public static final class ShooterConstants{
       public static int kShooterID = 9;
+      public static int kHatchID = 10;
+    }
+    public static final class ClimbingConstants{
+      public static final int kClimb1ID = 11;
+      public static final int kClimb2ID = 12;
+      /*I put this at 2 & 3 because I don't really know if we have other devices in the digital IOs 
+      so change if you must*/
+      public static final int m_TOPCHANNEL = 2;
+      public static final int m_BOTTOMCHANNEL = 3;
     }
 
     public static final class OIConstants{
