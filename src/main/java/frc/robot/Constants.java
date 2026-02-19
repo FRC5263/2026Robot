@@ -72,7 +72,7 @@ public final class Constants {
     public static final class AutoConstants{
       // TODO: get values
       public static final double kMaxSpeedMetersPerSecond = 0; // Limits in case auton shits
-      public static final double kMaxAccelelerationMetersPerSecondSquared = 0;
+      public static final double kMaxAccelelerationMetersPerSecondSquared = 1;
       public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
       public static final double kMaxAngularAccelerationRadiansPerSecondSquared = Math.PI;
 
