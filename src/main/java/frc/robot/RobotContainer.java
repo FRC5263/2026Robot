@@ -23,7 +23,7 @@ public class RobotContainer {
 
   private final shootContinuous m_calculateAndShoot = new shootContinuous();
 
-  private final swerveSubsystem driveBase = new swerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
+  private final swerveSubsystem driveBase = new swerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve/modules"));
 
 
   Joystick m_driveStick = new Joystick(Constants.OIConstants.kDriverJoystickPort);
