@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+/*package frc.robot.commands;
 
 import java.util.Optional;
 
@@ -15,14 +15,7 @@ public class shootContinuous extends Command {
   // TODO: math
   private double power = 1;
 
-  Optional<Alliance> team = DriverStation.getAlliance();
-
-  String gameData = DriverStation.getGameSpecificMessage();
-  char hubToShoot = team.get() == (Alliance.Red) ? 'R' : 'B';
-
   private ShooterSubsystem m_shooterSub = new ShooterSubsystem();
-  public shootContinuous() {
-    addRequirements(m_shooterSub);
   }
 
   @Override
@@ -30,15 +23,15 @@ public class shootContinuous extends Command {
 
   @Override
   public void execute() {
-    if(gameData.length() > 0) {
-      switch(gameData.charAt(0)) {
+    if(gameData.s_gameData.length() > 0) {
+      switch(gameData.s_gameData.charAt(0)) {
         case 'R':
-          if(hubToShoot == 'R'){
+          if(gameData.getAlliance() == 'R'){
             m_shooterSub.setPower(power);
           }else {end(isScheduled());}
           break;
         case 'B':
-          if(hubToShoot == 'B'){
+          if(gameData.s_gameData == 'B'){
             m_shooterSub.setPower(power);
           }else {end(isScheduled());}
           break;
@@ -58,3 +51,4 @@ public class shootContinuous extends Command {
     return false;
   }
 }
+*/
