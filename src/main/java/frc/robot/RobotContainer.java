@@ -26,7 +26,6 @@ import swervelib.SwerveInputStream;
 public class RobotContainer {
 
   //private final shootContinuous m_calculateAndShoot = new shootContinuous();
-  private Command c_driveAnglularVelocity;
 
   Joystick m_driveStick = new Joystick(Constants.OIConstants.kDriverJoystickPort);
   Joystick m_angleStick = new Joystick(Constants.OIConstants.kAngleJoystickPort);
