@@ -9,6 +9,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -32,21 +33,27 @@ public class RobotContainer {
 
   private final swerveSubsystem driveBase  = new swerveSubsystem(new File(Filesystem.getDeployDirectory().getPath()));
 
-  SwerveInputStream driveAngularVelocity = SwerveInputStream.of(driveBase.getSwerveDrive(),
-                                                                () -> m_driveStick.getY() * -1,
-                                                                () -> m_driveStick.getX() * -1)
-                                                            .withControllerRotationAxis(() -> m_driveStick.getX())
+/* SwerveInputStream driveAngularVelocity = SwerveInputStream.of(driveBase.getSwerveDrive(),
+                                                                () -> m_driveStick.getY(),
+                                                                () -> m_driveStick.getX())
+                                                            .withControllerRotationAxis(() -> m_angleStick.getX())
                                                             .deadband(0.05)
                                                             .scaleTranslation(0.8)
                                                             .allianceRelativeControl(true);
-  SwerveInputStream driveDirectAngle = driveAngularVelocity.copy().withControllerHeadingAxis(() -> m_angleStick.getY(),
+  SwerveInputStream driveDirectAngle = driveAngularVelocity.copy().withControllerHeadingAxis(() -> m_angleStick.getX(),
                                                                                              () -> m_driveStick.getY())
-                                                           .headingWhile(true);
-
+                                                           .headingWhile(true);*/
+  Command driveAngle = driveBase.driveCommand(() -> MathUtil.applyDeadband(m_driveStick.getX(), 0.01),
+                                              () -> MathUtil.applyDeadband(m_driveStick.getY(), 0.01), 
+                                              () -> m_angleStick.getX(), () -> m_angleStick.getY()); // Cheeseburger Y Fries
+  
+   Command driveTest = driveBase.driveCommand(() -> MathUtil.applyDeadband(m_driveStick.getX(), 0.1), 
+                                              () -> MathUtil.applyDeadband(m_driveStick.getY(), 0.1), 
+                                              () -> MathUtil.applyDeadband(m_angleStick.getX(), 0.1));
+  
   public RobotContainer() {
     configureBindings();
-    Command c_driveAnglularVelocity = driveBase.driveFieldOriented(driveDirectAngle);
-    driveBase.setDefaultCommand(c_driveAnglularVelocity);
+    driveBase.setDefaultCommand(driveTest);
   }
 
   private void configureBindings() {
