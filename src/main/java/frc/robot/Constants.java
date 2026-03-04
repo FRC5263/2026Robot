@@ -70,14 +70,14 @@ public final class Constants {
       public static final int m_TOPCHANNEL = 2;
       public static final int m_BOTTOMCHANNEL = 3;
     }
-    public static final class ClimbingConstants{
+    /*public static final class ClimbingConstants{
       public static int kClimb1ID = 10;
       public static int kClimb2ID = 11;
       public static double m_CLIMBSPEED = 1;
       public static int m_TOPCHANNEL = 0;
       public static int m_BOTTOMCHANNEL = 1;
 
-    }
+    }*/
 
     public static final class OIConstants{
       public static final int kDriverJoystickPort = 0;
