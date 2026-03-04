@@ -19,6 +19,8 @@ private final SparkMax climb2Motor = new SparkMax(Constants.ClimbingConstants.kC
 private final RelativeEncoder m_climbEncoder = climb1Motor.getEncoder();
 
 /*isn't it funny i didn't know what a digital limit switch looked like whilst making this :/ */
+
+/*isn't it funny i didn't know what a digital limit switch looked like whilst making this :/ */
 DigitalInput topLimit = new DigitalInput(Constants.ClimbingConstants.m_TOPCHANNEL);
 DigitalInput bottomLimit = new DigitalInput(Constants.ClimbingConstants.m_BOTTOMCHANNEL);
 
@@ -40,10 +42,12 @@ public ClimberSubsystem(){
 
        climb1Config
        //I have not a clue in the world if the brake thing works at all
+       //I have not a clue in the world if the brake thing works at all
             .idleMode(SparkMaxConfig.IdleMode.kBrake)
             .smartCurrentLimit(40);
             //limit because climb
 
+      
       
         climb1Motor.configure(
             climb1Config,
@@ -84,7 +88,9 @@ public ClimberSubsystem(){
         
         public void StopClimb(){
             climb1Motor.set(0);
+            climb1Motor.set(0);
         }
+      
       
         
 }
