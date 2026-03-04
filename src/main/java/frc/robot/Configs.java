@@ -1,6 +1,5 @@
 package frc.robot;
 
-import com.ctre.phoenix6.controls.Follower;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
