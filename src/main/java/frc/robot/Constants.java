@@ -26,7 +26,7 @@ public final class Constants {
     public static final float kMaxSpeedMPS = 4.8f;  // Limits :(
     public static final double kMaxAngularSpeed = Math.PI * 2;  // In radians per second
 
-    // TODO: Change when bot dimentions come back pls
+    // TODO: Verify that this is right
     public static final double kTrackWidth = Units.inchesToMeters(27);
     public static final double kWheelBase = Units.inchesToMeters(27);
     public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
@@ -46,6 +46,11 @@ public final class Constants {
                       kFrontRightAngleID = 8;
     // ------------ ------ ------------ //
 
+    public static int kFrontLeftEncoderPort = 0,
+                      kBackLeftEncoderPort = 1,
+                      kFrontRightEncoderPort = 2,
+                      kBackRightEncoderPort = 3;
+
     public static final double kFrontLeftAngleOffset = -Math.PI / 2;
     public static final double kBackLeftAngleOffset = Math.PI;
     public static final double kBackRightAngleOffset = Math.PI / 2;
@@ -55,6 +60,15 @@ public final class Constants {
     }
     public static final class ShooterConstants{
       public static int kShooterID = 9;
+      public static int kHatchID = 10;
+    }
+    public static final class ClimbingConstants{
+      public static final int kClimb1ID = 11;
+      public static final int kClimb2ID = 12;
+      /*I put this at 2 & 3 because I don't really know if we have other devices in the digital IOs 
+      so change if you must*/
+      public static final int m_TOPCHANNEL = 2;
+      public static final int m_BOTTOMCHANNEL = 3;
     }
     public static final class ClimbingConstants{
       public static int kClimb1ID = 10;
@@ -73,8 +87,9 @@ public final class Constants {
     }
 
     public static final class AutoConstants{
+      // TODO: get values
       public static final double kMaxSpeedMetersPerSecond = 0; // Limits in case auton shits
-      public static final double kMaxAccelelerationMetersPerSecondSquared = 0;
+      public static final double kMaxAccelelerationMetersPerSecondSquared = 1;
       public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
       public static final double kMaxAngularAccelerationRadiansPerSecondSquared = Math.PI;
 

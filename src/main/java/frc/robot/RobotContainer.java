@@ -4,60 +4,50 @@
 
 package frc.robot;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.OIConstants;
-import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.commands.shoot;
+import frc.robot.Constants.OperatorConstants;
+//import frc.robot.commands.shootContinuous;
+import frc.robot.subsystems.swerveSubsystem;
+import swervelib.SwerveInputStream;
 
 public class RobotContainer {
 
-  private final DriveSubsystem m_drive = new DriveSubsystem();
-  private final ShooterSubsystem m_shooter = new ShooterSubsystem();
+  //private final shootContinuous m_calculateAndShoot = new shootContinuous();
 
   Joystick m_driveStick = new Joystick(Constants.OIConstants.kDriverJoystickPort);
   Joystick m_angleStick = new Joystick(Constants.OIConstants.kAngleJoystickPort);
-  Joystick m_utilStick = new Joystick(Constants.OIConstants.kEverythingElsePort);
-  
 
+  private final swerveSubsystem driveBase  = new swerveSubsystem(new File(Filesystem.getDeployDirectory().getPath()));
+  
+   Command driveTest = driveBase.driveCommand(() -> MathUtil.applyDeadband(m_driveStick.getY(), 0.1) * -1, 
+                                              () -> MathUtil.applyDeadband(m_driveStick.getX(), 0.1) * -1, 
+                                              () -> MathUtil.applyDeadband(m_angleStick.getX(), 0.1));
+  
   public RobotContainer() {
     configureBindings();
-
-    m_drive.setDefaultCommand(
-      new RunCommand(
-        () -> m_drive.drive(
-          -MathUtil.applyDeadband(m_driveStick.getY(), OIConstants.kDriveDeadband), 
-          -MathUtil.applyDeadband(m_driveStick.getX(), OIConstants.kDriveDeadband), 
-          -MathUtil.applyDeadband(m_angleStick.getX(), OIConstants.kDriveDeadband), 
-          false),
-         m_drive));
-
-
-       
+    driveBase.setDefaultCommand(driveTest);
   }
 
   private void configureBindings() {
-    new JoystickButton(m_driveStick, 3)
-      .onTrue(new RunCommand(
-        () -> m_drive.setX(), 
-        m_drive));
-
-    new JoystickButton(m_driveStick, 2)
-      .onTrue(new InstantCommand(
-        () -> m_drive.zeroHeading(),
-        m_drive));
-
-       new JoystickButton(m_utilStick, 1) 
-       .whileTrue(new shoot(m_shooter));
-
+    JoystickButton m_button = new JoystickButton(m_angleStick, 0); 
+    //m_button.whileTrue(m_calculateAndShoot);
   }
 
   public Command getAutonomousCommand() {
-    return new Command() {}; // TODO: Build pls
+    return new Command(){};
   }
 }
