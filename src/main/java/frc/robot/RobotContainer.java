@@ -11,6 +11,7 @@ import java.io.FileWriter;
 import org.ejml.dense.block.MatrixOps_DDRB;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -41,22 +42,14 @@ public class RobotContainer {
   Joystick m_angleStick = new Joystick(Constants.OIConstants.kAngleJoystickPort);
 
   private final swerveSubsystem driveBase  = new swerveSubsystem(new File(Filesystem.getDeployDirectory().getPath()));
-
-  SwerveInputStream driveAngularVelocity = SwerveInputStream.of(driveBase.getSwerveDrive(),
-                                                                () -> m_driveStick.getY() * -1,
-                                                                () -> m_driveStick.getX() * -1)
-                                                            .withControllerRotationAxis(() -> m_driveStick.getX())
-                                                            .deadband(0.05)
-                                                            .scaleTranslation(0.8)
-                                                            .allianceRelativeControl(true);
-  SwerveInputStream driveDirectAngle = driveAngularVelocity.copy().withControllerHeadingAxis(() -> m_angleStick.getY(),
-                                                                                             () -> m_driveStick.getY())
-                                                           .headingWhile(true);
-
+  
+   Command driveTest = driveBase.driveCommand(() -> MathUtil.applyDeadband(m_driveStick.getY(), 0.1) * -1, 
+                                              () -> MathUtil.applyDeadband(m_driveStick.getX(), 0.1) * -1, 
+                                              () -> MathUtil.applyDeadband(m_angleStick.getX(), 0.1));
+  
   public RobotContainer() {
     configureBindings();
-    Command c_driveAnglularVelocity = driveBase.driveFieldOriented(driveDirectAngle);
-    driveBase.setDefaultCommand(c_driveAnglularVelocity);
+    driveBase.setDefaultCommand(driveTest);
   }
 
   private void configureBindings() {
