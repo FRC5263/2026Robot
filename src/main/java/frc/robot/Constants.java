@@ -59,8 +59,11 @@ public final class Constants {
     public static final boolean isGryroReversed = false;
     }
     public static final class ShooterConstants{
-      public static int kShooterID = 9;
-      public static int kHatchID = 10;
+      public static final int kShooterID = 9; 
+      public static final int kHatchChannel = 10;
+      public static final double openAngle = 75;
+      public static final double closedAngle = 0;
+     
     }
     public static final class ClimbingConstants{
       public static final int kClimb1ID = 11;

@@ -5,11 +5,11 @@ import java.util.function.DoubleSupplier;
 
 public class hatchCommad extends Command {
     HatchSubsystem hatchSubsystem = new HatchSubsystem();
-    DoubleSupplier angleSupplier;
+    double angle;
 
-    public hatchCommad(HatchSubsystem hatchSubsystem, DoubleSupplier angleSupplier){
+    public hatchCommad(HatchSubsystem hatchSubsystem, double angle){
         this.hatchSubsystem = hatchSubsystem;
-        this.angleSupplier = angleSupplier;
+        this.angle = angle;
 
         addRequirements(hatchSubsystem);
     }
@@ -19,7 +19,7 @@ public class hatchCommad extends Command {
 
     @Override
     public void execute(){
-        hatchSubsystem.Hatch(angleSupplier.getAsDouble());
+      hatchSubsystem.Hatch(angle);
     }
     
    @Override
