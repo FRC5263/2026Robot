@@ -8,11 +8,17 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
@@ -28,6 +34,8 @@ public class RobotContainer {
 
   //private final shootContinuous m_calculateAndShoot = new shootContinuous();
 
+  private final SendableChooser<Command> autoChooser;
+
   Joystick m_driveStick = new Joystick(Constants.OIConstants.kDriverJoystickPort);
   Joystick m_angleStick = new Joystick(Constants.OIConstants.kAngleJoystickPort);
 
@@ -39,6 +47,11 @@ public class RobotContainer {
   
   public RobotContainer() {
     configureBindings();
+    NamedCommands.registerCommand("test", Commands.print("Hello, World!"));
+    autoChooser = AutoBuilder.buildAutoChooser();
+    autoChooser.setDefaultOption("do nothing", Commands.none());
+    autoChooser.addOption("drive", driveBase.driveForward().withTimeout(1));
+    SmartDashboard.putData("auto chooser", autoChooser);
     driveBase.setDefaultCommand(driveTest);
   }
 
@@ -48,6 +61,6 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return new Command(){};
+    return autoChooser.getSelected();
   }
 }
