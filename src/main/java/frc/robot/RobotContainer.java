@@ -10,29 +10,29 @@ import java.io.FileWriter;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.pathfinding.Pathfinder;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.OperatorConstants;
-//import frc.robot.commands.shootContinuous;
+import frc.robot.commands.ShootContinuous;
 import frc.robot.subsystems.swerveSubsystem;
 import swervelib.SwerveInputStream;
 
 public class RobotContainer {
 
-  //private final shootContinuous m_calculateAndShoot = new shootContinuous();
+  private final ShootContinuous m_shooter = new ShootContinuous();
 
   private final SendableChooser<Command> autoChooser;
 
@@ -52,12 +52,19 @@ public class RobotContainer {
     autoChooser.setDefaultOption("do nothing", Commands.none());
     autoChooser.addOption("drive", driveBase.driveForward().withTimeout(1));
     SmartDashboard.putData("auto chooser", autoChooser);
+    DriverStation.silenceJoystickConnectionWarning(true);
     driveBase.setDefaultCommand(driveTest);
   }
 
   private void configureBindings() {
-    JoystickButton m_button = new JoystickButton(m_angleStick, 0); 
-    //m_button.whileTrue(m_calculateAndShoot);
+    JoystickButton commandButton = new JoystickButton(m_driveStick, 1);
+    JoystickButton commandStop = new JoystickButton(m_driveStick, 2);
+    commandButton.onTrue(DriverStation.getAlliance().isPresent() ?  
+    driveBase.driveToPose(
+      DriverStation.getAlliance().get() == Alliance.Red ? 
+        new Pose2d(14.115, 2.886, Rotation2d.fromDegrees(152.447))
+      : new Pose2d(3.060, 5.244, Rotation2d.fromDegrees(-37.694)))
+      : Commands.none().andThen(m_shooter).withTimeout(1.2));
   }
 
   public Command getAutonomousCommand() {
