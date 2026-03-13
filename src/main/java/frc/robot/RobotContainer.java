@@ -26,8 +26,9 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.RunIntake;
 import frc.robot.commands.ShootContinuous;
-import frc.robot.subsystems.swerveSubsystem;
+import frc.robot.subsystems.SwerveSubsystem;
 import swervelib.SwerveInputStream;
 
 public class RobotContainer {
@@ -39,8 +40,10 @@ public class RobotContainer {
   Joystick m_driveStick = new Joystick(Constants.OIConstants.kDriverJoystickPort);
   Joystick m_angleStick = new Joystick(Constants.OIConstants.kAngleJoystickPort);
 
-  private final swerveSubsystem driveBase  = new swerveSubsystem(new File(Filesystem.getDeployDirectory().getPath()));
+  private final SwerveSubsystem driveBase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory().getPath()));
   
+  private final RunIntake m_intake = new RunIntake();
+
    Command driveTest = driveBase.driveCommand(() -> MathUtil.applyDeadband(m_driveStick.getY(), 0.1) * -1, 
                                               () -> MathUtil.applyDeadband(m_driveStick.getX(), 0.1) * -1, 
                                               () -> MathUtil.applyDeadband(m_angleStick.getX(), 0.1));
@@ -48,6 +51,8 @@ public class RobotContainer {
   public RobotContainer() {
     configureBindings();
     NamedCommands.registerCommand("test", Commands.print("Hello, World!"));
+    NamedCommands.registerCommand("driveadShootLeftBlue", m_shooter.withTimeout(1.2));
+    NamedCommands.registerCommand("intake", m_intake);
     autoChooser = AutoBuilder.buildAutoChooser();
     autoChooser.setDefaultOption("do nothing", Commands.none());
     autoChooser.addOption("drive", driveBase.driveForward().withTimeout(1));

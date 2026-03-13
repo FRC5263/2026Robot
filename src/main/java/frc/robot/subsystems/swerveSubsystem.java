@@ -53,7 +53,7 @@ import swervelib.telemetry.SwerveDriveTelemetry;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 
   
-public class swerveSubsystem extends SubsystemBase
+public class SwerveSubsystem extends SubsystemBase
 {
   /**
    * Swerve drive object.
@@ -65,7 +65,7 @@ public class swerveSubsystem extends SubsystemBase
    *
    * @param directory Directory of swerve drive config files.
    */
-   public swerveSubsystem(File directory)
+   public SwerveSubsystem(File directory)
   { 
     boolean blueAlliance = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Blue;
 
@@ -104,7 +104,7 @@ public class swerveSubsystem extends SubsystemBase
    * @param driveCfg      SwerveDriveConfiguration for the swerve.
    * @param controllerCfg Swerve Controller.
    */
-  public swerveSubsystem(SwerveDriveConfiguration driveCfg, SwerveControllerConfiguration controllerCfg)
+  public SwerveSubsystem(SwerveDriveConfiguration driveCfg, SwerveControllerConfiguration controllerCfg)
   {
     swerveDrive = new SwerveDrive(driveCfg,
                                   controllerCfg,
