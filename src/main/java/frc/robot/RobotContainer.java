@@ -45,8 +45,8 @@ public class RobotContainer {
   private final RunIntake m_intake = new RunIntake();
 
    Command driveTest = driveBase.driveCommand(() -> MathUtil.applyDeadband(m_driveStick.getY(), 0.1) * -1, 
-                                              () -> MathUtil.applyDeadband(m_driveStick.getX(), 0.1) * -1, 
-                                              () -> MathUtil.applyDeadband(m_angleStick.getX(), 0.1));
+                                              () -> MathUtil.applyDeadband(m_driveStick.getX(), 0.1), 
+                                              () -> m_angleStick.getX());
   
   public RobotContainer() {
     configureBindings();

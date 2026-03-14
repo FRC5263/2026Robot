@@ -283,12 +283,12 @@ public class SwerveSubsystem extends SubsystemBase
   public Command driveCommand(DoubleSupplier translationX, DoubleSupplier translationY, DoubleSupplier angularRotationX)
   {
     return run(() -> {
-      // Make the robot move
+
       swerveDrive.drive(SwerveMath.scaleTranslation(new Translation2d(
                             translationX.getAsDouble() * swerveDrive.getMaximumChassisVelocity(),
                             translationY.getAsDouble() * swerveDrive.getMaximumChassisVelocity()), 0.8),
                         Math.pow(angularRotationX.getAsDouble(), 3) * swerveDrive.getMaximumChassisAngularVelocity(),
-                        false,
+                        true,
                         false);
     });
   }
@@ -395,7 +395,7 @@ public class SwerveSubsystem extends SubsystemBase
                                         newSetpoint.feedforwards().linearForces());
                       prevSetpoint.set(newSetpoint);
                       previousTime.set(newTime);
-
+                      
                     });
   }
 
