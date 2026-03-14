@@ -4,13 +4,14 @@
 
 package frc.robot.commands;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ShooterSubsystem;
 
 public class ShootContinuous extends Command {
 
   private final ShooterSubsystem m_shooter = new ShooterSubsystem();
-  private float power = 0.6f;
 
   public ShootContinuous() {
     addRequirements(m_shooter);
@@ -21,11 +22,7 @@ public class ShootContinuous extends Command {
 
   @Override
   public void execute() {
-   do {
-       m_shooter.setPower(power);
-   } while (m_shooter.isIdealDistance);
-   if(m_shooter.isIdealDistance == false){
-   }
+    m_shooter.setPower(0.75);
   }
 
   @Override

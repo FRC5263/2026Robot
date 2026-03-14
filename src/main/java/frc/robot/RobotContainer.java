@@ -28,12 +28,11 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.RunIntake;
 import frc.robot.commands.ShootContinuous;
+import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 import swervelib.SwerveInputStream;
 
 public class RobotContainer {
-
-  private final ShootContinuous m_shooter = new ShootContinuous();
 
   private final SendableChooser<Command> autoChooser;
 
@@ -44,14 +43,15 @@ public class RobotContainer {
   
   private final RunIntake m_intake = new RunIntake();
 
-   Command driveTest = driveBase.driveCommand(() -> MathUtil.applyDeadband(m_driveStick.getY(), 0.1) * -1, 
-                                              () -> MathUtil.applyDeadband(m_driveStick.getX(), 0.1), 
+   Command driveTest = driveBase.driveCommand(() -> MathUtil.applyDeadband(m_driveStick.getX(), 0.1) * -1, 
+                                              () -> MathUtil.applyDeadband(m_driveStick.getY(), 0.1), 
                                               () -> m_angleStick.getX());
-  
+  Command shoot = new ShootContinuous();
+
   public RobotContainer() {
     configureBindings();
     NamedCommands.registerCommand("test", Commands.print("Hello, World!"));
-    NamedCommands.registerCommand("driveadShootLeftBlue", m_shooter.withTimeout(1.2));
+    //NamedCommands.registerCommand("driveadShootLeftBlue", m_shooter.withTimeout(1.2));
     NamedCommands.registerCommand("intake", m_intake);
     autoChooser = AutoBuilder.buildAutoChooser();
     autoChooser.setDefaultOption("do nothing", Commands.none());
@@ -62,14 +62,18 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    JoystickButton commandButton = new JoystickButton(m_driveStick, 1);
-    JoystickButton commandStop = new JoystickButton(m_driveStick, 2);
-    commandButton.onTrue(DriverStation.getAlliance().isPresent() ?  
+    //JoystickButton commandButton = new JoystickButton(m_driveStick, 1);
+    JoystickButton intakeToggle = new JoystickButton(m_driveStick, 2);
+    JoystickButton commandStop = new JoystickButton(m_driveStick, 3);
+    /*commandButton.onTrue(DriverStation.getAlliance().isPresent() ?  
     driveBase.driveToPose(
       DriverStation.getAlliance().get() == Alliance.Red ? 
         new Pose2d(14.115, 2.886, Rotation2d.fromDegrees(152.447))
       : new Pose2d(3.060, 5.244, Rotation2d.fromDegrees(-37.694)))
       : Commands.none().andThen(m_shooter).withTimeout(1.2));
+    */
+    intakeToggle.toggleOnTrue(m_intake);
+    commandStop.toggleOnTrue(shoot);
   }
 
   public Command getAutonomousCommand() {
