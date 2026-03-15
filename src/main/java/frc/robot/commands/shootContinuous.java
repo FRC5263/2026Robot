@@ -22,7 +22,7 @@ public class ShootContinuous extends Command {
 
   @Override
   public void execute() {
-    m_shooter.setPower(0.75);
+    m_shooter.setPower(-0.75);
   }
 
   @Override

@@ -43,8 +43,8 @@ public class RobotContainer {
   
   private final RunIntake m_intake = new RunIntake();
 
-   Command driveTest = driveBase.driveCommand(() -> MathUtil.applyDeadband(m_driveStick.getX(), 0.1) * -1, 
-                                              () -> MathUtil.applyDeadband(m_driveStick.getY(), 0.1), 
+   Command driveTest = driveBase.driveCommand(() -> MathUtil.applyDeadband(m_driveStick.getY(), 0.1), 
+                                              () -> MathUtil.applyDeadband(m_driveStick.getX(), 0.1), 
                                               () -> m_angleStick.getX());
   Command shoot = new ShootContinuous();
 
@@ -62,16 +62,16 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    //JoystickButton commandButton = new JoystickButton(m_driveStick, 1);
+    JoystickButton commandButton = new JoystickButton(m_driveStick, 1);
     JoystickButton intakeToggle = new JoystickButton(m_driveStick, 2);
     JoystickButton commandStop = new JoystickButton(m_driveStick, 3);
-    /*commandButton.onTrue(DriverStation.getAlliance().isPresent() ?  
+    commandButton.onTrue(DriverStation.getAlliance().isPresent() ?  
     driveBase.driveToPose(
       DriverStation.getAlliance().get() == Alliance.Red ? 
         new Pose2d(14.115, 2.886, Rotation2d.fromDegrees(152.447))
       : new Pose2d(3.060, 5.244, Rotation2d.fromDegrees(-37.694)))
-      : Commands.none().andThen(m_shooter).withTimeout(1.2));
-    */
+      : Commands.none());
+    
     intakeToggle.toggleOnTrue(m_intake);
     commandStop.toggleOnTrue(shoot);
   }
