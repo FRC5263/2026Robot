@@ -60,6 +60,7 @@ public class RobotContainer {
   public RobotContainer() {
     configureBindings();
     NamedCommands.registerCommand("test", Commands.print("Hello, World!"));
+    NamedCommands.registerCommand("shooter", shoot);
     //NamedCommands.registerCommand("driveadShootLeftBlue", m_shooter.withTimeout(1.2));
     NamedCommands.registerCommand("intake", m_intake);
     autoChooser = AutoBuilder.buildAutoChooser();
@@ -68,6 +69,7 @@ public class RobotContainer {
     SmartDashboard.putData("auto chooser", autoChooser);
     DriverStation.silenceJoystickConnectionWarning(true);
     driveBase.setDefaultCommand(driveTest);
+    hatch.setDefaultCommand(hatchSet);
   }
 
   private void configureBindings() {

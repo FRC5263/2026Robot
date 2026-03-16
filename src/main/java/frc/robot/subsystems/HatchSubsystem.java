@@ -15,15 +15,15 @@ public class HatchSubsystem extends SubsystemBase {
     hatchServo = new Servo(Constants.ShooterConstants.kHatchID);
    }
 
-   public void Hatch(double angle){
-    hatchServo.setAngle(angle);
+   public void Hatch(double power){
+    hatchServo.set(power);
    }
 
    public void StopHatch(){
     hatchServo.setSpeed(0);
    }
 
-   public Command RunHatch(DoubleSupplier angle) {
-      return run(() -> {hatchServo.setAngle(angle.getAsDouble());});
+   public Command RunHatch(DoubleSupplier power) {
+      return run(() -> {Hatch(power.getAsDouble());});
    }
 }
