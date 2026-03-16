@@ -9,7 +9,8 @@ import frc.robot.subsystems.AgitatorSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class RunAgitator extends Command {
-  private final AgitatorSubsystem m_agitatorSub = new AgitatorSubsystem();
+  /** Creates a new RunAgitator. */
+  AgitatorSubsystem m_agitatorSub = new AgitatorSubsystem();
   public RunAgitator() {
     addRequirements(m_agitatorSub);
   }
@@ -21,12 +22,14 @@ public class RunAgitator extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_agitatorSub.setPower(0.5);
+    m_agitatorSub.setPower(-.80);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    m_agitatorSub.setPower(0);
+  }
 
   // Returns true when the command should end.
   @Override

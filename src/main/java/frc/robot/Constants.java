@@ -60,7 +60,7 @@ public final class Constants {
     }
     public static final class ShooterConstants{
       public static int kShooterID = 9;
-      public static int kHatchID = 10;  
+      public static int kHatchID = 0;  
       public static int kIntakeID = 13;
       public static int kAgitatorID = 14;
     }

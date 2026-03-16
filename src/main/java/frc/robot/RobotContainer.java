@@ -26,8 +26,10 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.RunAgitator;
 import frc.robot.commands.RunIntake;
 import frc.robot.commands.ShootContinuous;
+import frc.robot.subsystems.HatchSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 import swervelib.SwerveInputStream;
@@ -43,10 +45,17 @@ public class RobotContainer {
   
   private final RunIntake m_intake = new RunIntake();
 
-   Command driveTest = driveBase.driveCommand(() -> MathUtil.applyDeadband(m_driveStick.getY(), 0.1), 
-                                              () -> MathUtil.applyDeadband(m_driveStick.getX(), 0.1), 
-                                              () -> m_angleStick.getX());
+  private final HatchSubsystem hatch = new HatchSubsystem();
+
+  private final RunAgitator agitator = new RunAgitator();
+
+   Command driveTest = driveBase.driveCommand(() -> (MathUtil.applyDeadband(m_driveStick.getY(), 0.1) * Math.pow(0.9, 3.0)), 
+                                              () -> MathUtil.applyDeadband(m_driveStick.getX(), 0.1) * Math.pow(0.9, 3.0), 
+                                              () -> m_angleStick.getX() * Math.
+                                              pow(0.9, 3.0));
   Command shoot = new ShootContinuous();
+
+  Command hatchSet = hatch.RunHatch(() -> m_angleStick.getZ());
 
   public RobotContainer() {
     configureBindings();
@@ -64,7 +73,8 @@ public class RobotContainer {
   private void configureBindings() {
     JoystickButton commandButton = new JoystickButton(m_driveStick, 1);
     JoystickButton intakeToggle = new JoystickButton(m_driveStick, 2);
-    JoystickButton commandStop = new JoystickButton(m_driveStick, 3);
+    JoystickButton shooterToggle = new JoystickButton(m_driveStick, 3);
+    JoystickButton agitatorToggle = new JoystickButton(m_driveStick, 5);
     commandButton.onTrue(DriverStation.getAlliance().isPresent() ?  
     driveBase.driveToPose(
       DriverStation.getAlliance().get() == Alliance.Red ? 
@@ -73,7 +83,8 @@ public class RobotContainer {
       : Commands.none());
     
     intakeToggle.toggleOnTrue(m_intake);
-    commandStop.toggleOnTrue(shoot);
+    shooterToggle.toggleOnTrue(shoot);
+    agitatorToggle.toggleOnTrue(agitator);
   }
 
   public Command getAutonomousCommand() {

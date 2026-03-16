@@ -21,7 +21,7 @@ public class RunIntake extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_intakeSub.setPower(0.75);
+    m_intakeSub.setPower(-1.);
   }
 
   // Called once the command ends or is interrupted.
