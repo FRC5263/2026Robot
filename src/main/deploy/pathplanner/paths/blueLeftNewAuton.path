@@ -160,17 +160,6 @@
       "waypointRelativePos": 2.9088785046729098,
       "endWaypointRelativePos": 3.7838939857288594,
       "command": null
-    },
-    {
-      "name": "shootForTime",
-      "waypointRelativePos": 7.0,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "shoot3"
-        }
-      }
     }
   ],
   "globalConstraints": {

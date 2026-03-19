@@ -304,17 +304,6 @@
           "name": "intake"
         }
       }
-    },
-    {
-      "name": "shoot",
-      "waypointRelativePos": 12.5,
-      "endWaypointRelativePos": 15.0,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "shooter"
-        }
-      }
     }
   ],
   "globalConstraints": {
