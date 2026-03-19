@@ -46,18 +46,22 @@ public class RobotContainer {
   
   private final RunIntake m_intake = new RunIntake();
 
+  private final ShooterSubsystem m_shooter = new ShooterSubsystem();
+
   private final HatchSubsystem hatch = new HatchSubsystem();
 
   private final RunAgitator agitator = new RunAgitator();
 
-   Command driveTest = driveBase.driveCommand(() -> (MathUtil.applyDeadband(m_driveStick.getY(), 0.1) * Math.pow(0.9, 3.0)), 
-                                              () -> (MathUtil.applyDeadband(m_driveStick.getX(), 0.1) * Math.pow(0.9, 3.0)), 
-                                              () -> (MathUtil.applyDeadband(m_angleStick.getX(), 0.1)) * -1);
+   Command driveTest = driveBase.driveCommand(() -> (MathUtil.applyDeadband(m_driveStick.getRawAxis(1), 0.1) * Math.pow(0.9, 3.0)), 
+                                              () -> (MathUtil.applyDeadband(m_driveStick.getRawAxis(0), 0.1) * Math.pow(0.9, 3.0)), 
+                                              () -> (MathUtil.applyDeadband(m_driveStick.getRawAxis(5), 0.1)) * -1);
 
    //Command driveNewStick = driveBase.driveCommand(null, null, null)
-  Command shoot = new ShootContinuous();
+  //Command shoot = new ShootContinuous();
 
-  Command hatchSet = hatch.RunHatch(() -> m_operaterStick.getZ() * -1);
+  Command hatchSet = hatch.RunHatch(() -> m_driveStick.getRawAxis(2) * -1);
+
+  Command shoot = m_shooter.runOnAxis(() -> m_driveStick.getRawAxis(6));
 
   public RobotContainer() {
     configureBindings();
@@ -74,10 +78,10 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    JoystickButton commandButton = new JoystickButton(m_operaterStick, 1);
-    JoystickButton intakeToggle = new JoystickButton(m_operaterStick, 2);
-    JoystickButton shooterToggle = new JoystickButton(m_operaterStick, 3);
-    JoystickButton agitatorToggle = new JoystickButton(m_operaterStick, 5);
+    JoystickButton commandButton = new JoystickButton(m_driveStick, 4);
+    JoystickButton intakeToggle = new JoystickButton(m_driveStick, 5);
+    //JoystickButton shooterToggle = new JoystickButton(m_driveStick, 3);
+    JoystickButton agitatorToggle = new JoystickButton(m_driveStick, 7);
     commandButton.onTrue(DriverStation.getAlliance().isPresent() ?  
     driveBase.driveToPose(
       DriverStation.getAlliance().get() == Alliance.Red ? 
@@ -86,7 +90,7 @@ public class RobotContainer {
       : Commands.none());
     
     intakeToggle.toggleOnTrue(m_intake);
-    shooterToggle.toggleOnTrue(shoot);
+    //shooterToggle.toggleOnTrue(shoot);
     agitatorToggle.toggleOnTrue(agitator);
   }
 
