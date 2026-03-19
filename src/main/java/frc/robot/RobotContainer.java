@@ -50,9 +50,8 @@ public class RobotContainer {
   private final RunAgitator agitator = new RunAgitator();
 
    Command driveTest = driveBase.driveCommand(() -> (MathUtil.applyDeadband(m_driveStick.getY(), 0.1) * Math.pow(0.9, 3.0)), 
-                                              () -> MathUtil.applyDeadband(m_driveStick.getX(), 0.1) * Math.pow(0.9, 3.0), 
-                                              () -> m_angleStick.getX() * Math.
-                                              pow(0.9, 3.0));
+                                              () -> (MathUtil.applyDeadband(m_driveStick.getX(), 0.1) * Math.pow(0.9, 3.0)), 
+                                              () -> (MathUtil.applyDeadband(m_angleStick.getX(), 0.1)) * -1);
   Command shoot = new ShootContinuous();
 
   Command hatchSet = hatch.RunHatch(() -> m_angleStick.getZ());
@@ -61,7 +60,7 @@ public class RobotContainer {
     configureBindings();
     NamedCommands.registerCommand("test", Commands.print("Hello, World!"));
     NamedCommands.registerCommand("shooter", shoot);
-    //NamedCommands.registerCommand("driveadShootLeftBlue", m_shooter.withTimeout(1.2));
+    NamedCommands.registerCommand("shoot3", shoot.withTimeout(6));
     NamedCommands.registerCommand("intake", m_intake);
     autoChooser = AutoBuilder.buildAutoChooser();
     autoChooser.setDefaultOption("do nothing", Commands.none());
